@@ -1,7 +1,5 @@
 # DataPatch
 
-[![tests](https://github.com/<your-username>/datapatch/actions/workflows/tests.yml/badge.svg)](https://github.com/<your-username>/datapatch/actions/workflows/tests.yml)
-[![deploy](https://github.com/<your-username>/datapatch/actions/workflows/pages.yml/badge.svg)](https://<your-username>.github.io/datapatch/)
 ![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)
 ![License: MIT](https://img.shields.io/badge/license-MIT-green)
 
@@ -17,23 +15,6 @@ have deployed it). The demo runs the real Python code in your browser, so your d
 leaves your device.
 
 ![DataPatch cleaning the bundled sample dataset](docs/screenshot.png)
-
-## Contents
-
-- [Why](#why)
-- [Features](#features)
-- [Quick start](#quick-start)
-- [Deploy on GitHub Pages](#deploy-on-github-pages)
-- [How it runs: one page, two engines](#how-it-runs-one-page-two-engines)
-- [Live demo walkthrough](#live-demo-walkthrough)
-- [Recipes and the command line](#recipes-and-the-command-line)
-- [How the quality score works](#how-the-quality-score-works)
-- [Project layout](#project-layout)
-- [API](#api)
-- [Using the engine from Python](#using-the-engine-from-python)
-- [Development](#development)
-- [Notes and limits](#notes-and-limits)
-- [License and author](#license-and-author)
 
 ## Why
 
