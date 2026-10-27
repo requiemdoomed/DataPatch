@@ -74,51 +74,6 @@ python app.py
 Open <http://127.0.0.1:5000>. Set the `PORT` environment variable to use another port, or
 `FLASK_DEBUG=1` for auto-reload while developing.
 
-## Deploy on GitHub Pages
-
-The repository is ready to publish as a static site. GitHub Pages has no Python server, so the
-site runs DataPatch's Python package inside the visitor's browser (see the next section).
-
-1. Create a repository called `datapatch` on GitHub and push this project to its `main` branch.
-2. In the repository, open **Settings → Pages** and set **Source** to **GitHub Actions**.
-3. The **deploy to GitHub Pages** workflow (`.github/workflows/pages.yml`) runs the tests,
-   assembles the site with `tools/build_site.py` and publishes it. It runs on every push to
-   `main`; you can also start it from the **Actions** tab.
-4. The site appears at `https://<your-username>.github.io/datapatch/`.
-
-Prefer not to use Actions? Choose **Deploy from a branch** with `main` and `/ (root)` instead.
-That works too: every path in `index.html` is relative and the `.nojekyll` file stops Pages
-from dropping `datapatch/__init__.py`.
-
-To preview the static site locally exactly as Pages serves it:
-
-```bash
-python tools/build_site.py          # writes _site/
-python -m http.server 8000 -d _site
-```
-
-and open <http://localhost:8000>. A plain file server is enough; there's no backend.
-
-## How it runs: one page, two engines
-
-`index.html` is the whole app. It loads the front end from `static/` and sends every action
-(upload, apply a step, undo, export...) to the Python code in `datapatch/api.py`. Where that
-Python code runs depends on how the page was opened:
-
-| Opened via | Engine | What happens |
-| --- | --- | --- |
-| GitHub Pages or any static host | **In the browser** | A Web Worker downloads [Pyodide](https://pyodide.org) (CPython compiled to WebAssembly) and pandas from jsDelivr, copies the `datapatch/*.py` files from the site into it and calls `DataPatchAPI` directly. |
-| `python app.py` | **Local server** | Flask serves the page and forwards requests to the same `DataPatchAPI`. |
-
-Both paths run the same Python module, so the hosted demo and the local app behave the same.
-The badge next to the logo shows which engine is in use.
-
-- The first visit to the hosted site downloads about 20 MB (Python, numpy and pandas). The
-  browser caches it, so later visits start in a few seconds.
-- Add `?engine=browser` to the local server's URL to try the in-browser engine locally.
-- To serve Pyodide from your own site instead of jsDelivr, copy a Pyodide release into the
-  site and open the page with `?pyodide=path/to/pyodide/`. Only same-site paths are accepted.
-
 ## Live demo walkthrough
 
 1. Click **Try the messy sample**. It loads `sample_data/messy_customers.csv`: 84 customer rows
@@ -137,40 +92,6 @@ The badge next to the logo shows which engine is in use.
 7. Flip between **Cleaned** and **Original**, undo a step or two, then **Export cleaned CSV**
    and **Save recipe**.
 
-## Recipes and the command line
-
-A recipe is the list of steps from the History panel, saved as JSON:
-
-```json
-{
-  "datapatch_recipe": 1,
-  "source": "messy_customers.csv",
-  "created": "2026-10-26T21:40:00+00:00",
-  "steps": [
-    { "op": "remove_duplicates", "params": {}, "label": "Remove duplicate rows" },
-    { "op": "trim_whitespace", "params": {}, "label": "Trim whitespace in all columns" },
-    { "op": "convert_type", "params": { "columns": ["age"], "target": "integer" } }
-  ]
-}
-```
-
-Apply it in the browser with **Apply recipe...** under History. It is all or nothing: if a step
-fails (say a column is missing), nothing is applied and the error names the step. Steps that have
-nothing to change on the new file, such as removing duplicates when there are none, are skipped
-and reported.
-
-The same recipe runs from the command line:
-
-```bash
-python -m datapatch data.csv                         # print the profile and score
-python -m datapatch data.csv --recipe recipe.json    # clean, writes data_cleaned.csv
-python -m datapatch data.csv -r recipe.json -o clean/data.csv --quiet
-python -m datapatch data.csv -r recipe.json --strict # fail instead of skipping no-op steps
-```
-
-The exit code is `0` on success, `1` if a step fails and `2` if a file can't be read. If you
-install the project (`pip install -e .`) the same command is available as `datapatch`.
-
 ## How the quality score works
 
 The score (0 to 100) is a weighted blend of four ratios:
@@ -183,36 +104,6 @@ The score (0 to 100) is a weighted blend of four ratios:
 | Validity | 20% | Per column: 1.0 if the stored type fits the values. Text columns that are really numbers, dates or yes/no flags get at most half credit until converted. |
 
 Outliers and rare values are reported but don't change the score, because they are often real.
-
-## Project layout
-
-```
-datapatch/
-├── index.html                # the app; runs Python locally via Flask or in the browser via Pyodide
-├── app.py                    # local server: python app.py
-├── datapatch/
-│   ├── cleaning.py           # the operations (pure pandas, never modify their input)
-│   ├── profiling.py          # column profiles, issue detection, quality score, profile cache
-│   ├── workspace.py          # a session: original data, history, undo/redo, change tracking
-│   ├── recipe.py             # saving and replaying steps
-│   ├── files.py              # reading CSV uploads, CSV and JSON output
-│   ├── api.py                # request handling shared by Flask and the browser engine
-│   ├── server.py             # thin Flask wrapper around api.py
-│   └── __main__.py           # command-line interface
-├── static/
-│   ├── css/style.css
-│   └── js/
-│       ├── app.js            # the UI
-│       ├── engine.js         # picks the local server or the in-browser engine
-│       └── engine-worker.js  # runs Pyodide + pandas + datapatch in a Web Worker
-├── tools/build_site.py       # assembles the GitHub Pages site
-├── sample_data/messy_customers.csv
-├── notebooks/datapatch_walkthrough.ipynb
-├── docs/                     # architecture notes and the screenshot
-└── tests/                    # pytest suite
-```
-
-`docs/ARCHITECTURE.md` explains the two engines, undo, change tracking and profile caching.
 
 ## API
 
@@ -257,43 +148,7 @@ value]` for the page), a `changes` summary, the column profiles, both scores and
 
 </details>
 
-## Using the engine from Python
-
-The cleaning code doesn't depend on Flask:
-
-```python
-from datapatch import Workspace, apply_recipe
-from datapatch.files import read_csv
-
-ws = Workspace(read_csv(open("data.csv", "rb").read()), "data.csv")
-ws.apply("trim_whitespace", {})
-ws.apply("convert_type", {"columns": ["price"], "target": "number"})
-print(ws.current_profile["summary"]["score"], ws.changes["cells_changed"])
-ws.undo()
-
-cleaned, report = apply_recipe(ws.original, open("recipe.json").read())
-print(report.summary())
-```
-
-`notebooks/datapatch_walkthrough.ipynb` runs the whole demo this way. Open it with Jupyter
-(`pip install notebook`, then `jupyter notebook`).
-
-## Development
-
-```bash
-pip install -r requirements-dev.txt
-pytest              # 101 tests: operations, profiler, recipes, CLI, workspace and the API
-ruff check .        # lint
-ruff format .       # format
-node --test tests/js/*.test.mjs   # front-end checks (Node 20+)
-```
-
-GitHub Actions runs lint, a JavaScript syntax check, a test build of the Pages site and the
-tests on Python 3.10 to 3.13, including the oldest supported pandas (2.2). The in-browser engine
-uses Pyodide 314.0.7 (Python 3.14, pandas 3.0); the version is set in `static/js/engine.js`. See [CONTRIBUTING.md](CONTRIBUTING.md) for how to add an operation and what a pull
-request should include, and [CHANGELOG.md](CHANGELOG.md) for what changed between versions.
-
-## Notes and limits
+## Limitations
 
 - With the local server, sessions live in its memory and expire after three hours of inactivity.
   In the browser, a session lives in the page and ends when you reload or close it, so export
@@ -309,6 +164,5 @@ request should include, and [CHANGELOG.md](CHANGELOG.md) for what changed betwee
 
 ## License and author
 
-Released under the MIT License. See [LICENSE](LICENSE).
+Swayam Shakya, Released under the MIT License. See [LICENSE](LICENSE).
 
-Built by Swayam Shakya.
