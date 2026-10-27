@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "datapatch"
+version = "1.2.0"
+description = "A visual workbench for profiling and cleaning messy CSV files."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Swayam Shakya" }]
+requires-python = ">=3.10"
+dependencies = ["Flask>=3.0,<4", "pandas>=2.2"]
+keywords = ["csv", "data cleaning", "pandas", "flask", "data quality"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Framework :: Flask",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.5"]
+
+[project.scripts]
+datapatch = "datapatch.__main__:main"
+
+[tool.setuptools]
+packages = ["datapatch"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+filterwarnings = [
+    "error::FutureWarning",
+    "error::DeprecationWarning:datapatch.*",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+extend-exclude = ["notebooks"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "B", "I"]

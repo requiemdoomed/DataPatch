@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- "browser" runs the Python engine here with Pyodide; the Flask server swaps in "server". -->
+  <meta name="datapatch-engine" content="browser">
+  <title>DataPatch · CSV cleaning workbench</title>
+  <meta name="description" content="Inspect a messy CSV, clean it step by step with undo, and compare data quality before you export.">
+  <link rel="icon" href="static/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="static/css/style.css">
+  <script type="module" src="static/js/app.js"></script>
+</head>
+<body>
+  <div class="loading-bar" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="DataPatch home">
+      <svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true">
+        <rect x="3" y="3" width="26" height="26" rx="6" class="brand-tile"/>
+        <path d="M9 12h14M9 17h14M9 22h8" class="brand-lines"/>
+        <rect x="17" y="18.5" width="9" height="7" rx="1.5" class="brand-patch"/>
+      </svg>
+      <span>DataPatch</span>
+    </a>
+    <div class="file-chip" id="fileChip" hidden></div>
+    <span class="engine-chip" id="engineChip" hidden></span>
+    <div class="topbar-actions">
+      <label class="btn ghost" id="newFileBtn" hidden>
+        Open another file
+        <input type="file" id="fileInputTop" accept=".csv,.tsv,.txt,text/csv" hidden>
+      </label>
+      <button class="btn primary" id="exportBtn" type="button" hidden>Export cleaned CSV</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="welcome" id="welcome">
+      <div class="welcome-card">
+        <p class="eyebrow">CSV cleaning workbench</p>
+        <h1>Patch up a messy CSV before it reaches your analysis.</h1>
+        <p class="lede">
+          DataPatch profiles every column, points out what's broken and lets you fix it
+          one undoable step at a time. Compare the quality score of the original and the
+          cleaned data, then export.
+        </p>
+        <div class="welcome-actions">
+          <label class="btn primary big" id="chooseFile">
+            Choose a CSV file
+            <input type="file" id="fileInput" accept=".csv,.tsv,.txt,text/csv" hidden>
+          </label>
+          <button class="btn ghost big" id="sampleBtn" type="button">Try the messy sample</button>
+        </div>
+        <p class="fine">or drop a file anywhere on this page &middot; .csv, .tsv or .txt up to 25&nbsp;MB &middot; your data never leaves this device</p>
+        <p class="engine-status" id="engineStatus" data-state="loading" role="status">Starting DataPatch…</p>
+        <ul class="feature-list">
+          <li><strong>Profile</strong> missing values, duplicates, stray spaces, case variants and numbers stored as text.</li>
+          <li><strong>Transform</strong> with trimming, category merging, type conversion, outlier handling and more.</li>
+          <li><strong>Undo anything</strong>: every step is replayable from the original upload.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="workspace" id="workspace" hidden>
+      <section class="panel scoreboard" aria-label="Data quality comparison">
+        <div class="score-side">
+          <div class="score-pair">
+            <div class="score" id="scoreOriginal"></div>
+            <div class="score-delta" id="scoreDelta"></div>
+            <div class="score" id="scoreCleaned"></div>
+          </div>
+          <p class="change-summary" id="changeSummary"></p>
+        </div>
+        <div class="components" id="components"></div>
+        <table class="metrics" id="metrics"></table>
+      </section>
+
+      <aside class="panel profiles" aria-label="Column profiles">
+        <header class="panel-head">
+          <h2>Columns</h2>
+          <span class="muted" id="issueCount"></span>
+        </header>
+        <div class="profile-list" id="profileList"></div>
+      </aside>
+
+      <section class="panel grid-panel" aria-label="Data preview">
+        <header class="panel-head grid-head">
+          <div class="segmented" role="group" aria-label="Which data to show">
+            <button type="button" data-view="cleaned">Cleaned</button>
+            <button type="button" data-view="original">Original</button>
+          </div>
+          <span class="muted" id="gridMeta"></span>
+          <label class="checkline toggle" id="changesToggle">
+            <input type="checkbox" id="showChanges" checked>
+            Highlight changes
+          </label>
+          <div class="pager">
+            <button type="button" class="icon-btn" id="prevPage" aria-label="Previous rows">&lsaquo;</button>
+            <button type="button" class="icon-btn" id="nextPage" aria-label="Next rows">&rsaquo;</button>
+          </div>
+        </header>
+        <div class="table-wrap">
+          <table class="data" id="dataTable"></table>
+        </div>
+        <p class="legend">
+          <span class="swatch swatch-missing"></span>missing
+          <span class="swatch swatch-placeholder"></span>placeholder
+          <span class="swatch swatch-space"></span>extra spaces (shown as ·)
+          <span class="swatch swatch-changed"></span>changed (hover to see the original)
+        </p>
+      </section>
+
+      <aside class="panel tools" aria-label="Transformations">
+        <form id="opForm" class="op-form" novalidate>
+          <header class="panel-head"><h2>Transform</h2></header>
+          <label class="field">
+            <span>Operation</span>
+            <select id="opSelect"></select>
+          </label>
+          <p class="op-help" id="opHelp"></p>
+          <div id="opFields"></div>
+          <button class="btn primary wide" type="submit" id="applyBtn">Apply step</button>
+        </form>
+
+        <section class="history">
+          <header class="panel-head">
+            <h2>History</h2>
+            <div class="history-actions">
+              <button type="button" class="btn small" id="undoBtn" title="Undo (Ctrl+Z)">Undo</button>
+              <button type="button" class="btn small" id="redoBtn" title="Redo (Ctrl+Shift+Z)">Redo</button>
+              <button type="button" class="btn small ghost" id="resetBtn">Reset</button>
+            </div>
+          </header>
+          <ol class="history-list" id="historyList"></ol>
+          <div class="recipe">
+            <div class="recipe-actions">
+              <button class="btn small ghost" id="saveRecipeBtn" type="button" disabled>Save recipe</button>
+              <label class="btn small ghost">
+                Apply recipe&hellip;
+                <input type="file" id="recipeInput" accept=".json,application/json" hidden>
+              </label>
+            </div>
+            <p class="recipe-help">
+              A recipe is this list of steps saved as JSON. Apply it to the next export of the same
+              data, here or with <code>python -m datapatch</code>.
+            </p>
+          </div>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="foot">DataPatch &middot; built by Swayam Shakya</footer>
+
+  <div class="drop-overlay" id="dropOverlay" hidden><p>Drop the CSV to open it</p></div>
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+</body>
+</html>

@@ -1,0 +1,85 @@
+customer_id,full_name,email,city,signup_date,age,annual_spend,plan,active
+1001,Arjun Smith,N/A,Mississauga,2024-09-07,46,1246.30,Basic,0
+1002,Olivia Brown,olivia.brown75@example.com,hamilton,2024-01-08,27,$795.11,BASIC,1
+1003,ryan roy,ryan.roy75@example.com,brampton,02/18/2024,,1083.89,Premium,N
+1004,Kabir Lee,kabir.lee47@example.com,Brampton ,04/03/2024,52,1727.47,Pro,No
+1005,Olivia Tremblay,olivia.tremblay97@example.com,Ottawa,2024-01-22,54,"$4,217.24",pro,N
+1006,Isla Gill,,TORONTO,08/23/2024,22,1568.96,Pro,false
+1007,Mia Clark,mia.clark86@example.com,Ottawa,2024-03-20,22,1465.18,Premium,TRUE
+1008,Anika Walker,anika.walker22@example.com,hamilton,2024-03-27,54,2063.59,Premium,no
+1009,noah patel,noah.patel30@example.com, Toronto,2024-03-09,28,1848.11,Basic,1
+1010,Isla Roy,isla.roy7@example.com,hamilton,2024-07-13,49,$411.32,basic,false
+1011,Emma Patel, n/a,Hamilton,2024-06-20,32,$815.22,Premium,0
+1012,chloe gill,chloe.gill63@example.com,Ottawa,2024-08-10, 41 ,3584.84,pro,yes
+1013,Mateo  Sharma ,mateo.sharma68@example.com,Hamilton,,24,1342.02,Basic,N
+1014,Dev Brown,dev.brown65@example.com,Brampton ,2024-04-26,44,1181.14,Premium,Yes
+1015,Aarav Kaur,aarav.kaur34@example.com,hamilton,,41,"$1,826.50",basic,false
+1016,Rohan  Wilson ,rohan.wilson80@example.com,Hamilton,2024-08-21,unknown,,pro,no
+1017,grace gagnon,grace.gagnon82@example.com,Ottawa,,65,"$4,767.77",Pro,false
+1018,ella roy,ella.roy77@example.com,Mississauga,2024-09-18,19,"$3,519.41",pro,yes
+1031,Leo Brown,leo.brown44@example.com,brampton,"Jun 2, 2024",unknown,"$3,587.36",Basic,Yes
+1019,ava walker,,brampton,09/08/2024,39,"$2,080.98",pro,N
+1020,Jack Gill,jack.gill67@example.com,Hamilton,2024-09-05,20,3754.05,Basic,yes
+1021,Noah Gill,noah.gill16@example.com,MISSISSAUGA,2024-02-18,31,3734.18, Premium,Yes
+1022,Dev Gagnon,dev.gagnon57@example.com,Hamilton,2024-05-15,49,1279.03,BASIC,1
+1023,Jack Brown,jack.brown18@example.com,Ottawa,06/03/2024,230,"3,253.1",Basic,N
+1024,Noah Singh,noah.singh60@example.com, Toronto,,33,2139.52,Premium,TRUE
+1025,Rohan Wilson,rohan.wilson93@example.com,MISSISSAUGA,2024-08-23,40,,Basic,no
+1026,  Jack Patel,,brampton,2024-03-27,62,"$1,330.29", Premium,0
+1027,Grace Clark,,brampton,,unknown,1339.38,basic,No
+1028,ethan walker,ethan.walker2@example.com,hamilton,2024-05-20,52,,BASIC,Yes
+1029,Emma Brown,emma.brown81@example.com,brampton,08/17/2024,36,$205.00,Basic,Yes
+1030,Nora Tremblay,nora.tremblay25@example.com,brampton,"Feb 22, 2024",46,"2,674.8", Premium,Y
+1031,Leo Brown,leo.brown44@example.com,brampton,"Jun 2, 2024",unknown,"$3,587.36",Basic,Yes
+1046,Emma Gill,emma.gill37@example.com,MISSISSAUGA,2024-04-10,61,$903.12,basic,1
+1032,Liam Roy,liam.roy65@example.com,Mississauga,2024-05-02,29,136.95,Premium,1
+1033,  Arjun Brown,arjun.brown40@example.com,Brampton,2024-06-13,36,1060.59,Basic,No
+1034,  Ethan Walker,ethan.walker52@example.com,Ottawa,05/10/2024,24,"2,596.6",Pro,0
+1035,Lucas Kaur,lucas.kaur64@example.com,Hamilton,"Jan 27, 2024",51,"3,554.4",Basic,1
+1010,Isla Roy,isla.roy7@example.com,hamilton,2024-07-13,49,$411.32,basic,false
+1036,Dev Tremblay,dev.tremblay3@example.com,Hamilton,2024-02-01,59,611.0, Premium,Yes
+1037,Vivaan Sharma,vivaan.sharma88@example.com,Mississauga,2024-08-26,51,550.29,pro,false
+1038,  Ethan Kaur,ethan.kaur34@example.com,Brampton,"Aug 16, 2024",23,"3,319.7",Pro,no
+1039,liam lee,liam.lee33@example.com,Mississauga,2024-01-16,36,$585.75,premium,Y
+1040,Leo Tremblay,leo.tremblay60@example.com,Toronto  ,,,"2,268.0",premium,Y
+1041,Lucas Brown,N/A,Torontoo,,27,"$3,076.21",Basic,N
+1042,Sofia Gill,sofia.gill63@example.com,Brampton,2024-08-22,38,2067.73,Basic,N
+1043,Aarav Wilson,aarav.wilson51@example.com,Brampton ,2024-01-24,unknown,"1,946.0",Basic,N
+1044,Anika Martin,anika.martin7@example.com,TORONTO,,46,1008.49,Premium,Yes
+1045,Ella Kaur,ella.kaur71@example.com,Toronto,07/15/2024,27,"$1,459.45", Premium,yes
+1046,Emma Gill,emma.gill37@example.com,MISSISSAUGA,2024-04-10,61,$903.12,basic,1
+1047,Jack Kaur,jack.kaur29@example.com,MISSISSAUGA,2024-07-05,34,"$1,720.35",basic,N
+1048,Ethan Kaur,ethan.kaur3@example.com,Ottawa,2024-07-24,43,3639.88,Pro,N
+1049,Noah Roy,noah.roy81@example.com,Brampton,2024-05-08,60,"4,584.5",Basic,yes
+1050,Priya Martin,priya.martin61@example.com,Ottawa,,52,"$98,500.00",Basic,no
+1051,Noah Smith,unknown,Toronto  ,01/01/2024,33,295.93,Basic,Y
+1052,Mateo Roy,N/A,Mississauga,2024-07-09,,,BASIC,N
+1053,Vivaan Walker,vivaan.walker61@example.com,Hamilton,01/14/2024,,"1,028.5",Pro,TRUE
+1054,Liam  Singh ,liam.singh55@example.com,brampton,2024-01-23,45,"$1,974.96",BASIC,1
+1055,Liam Brown,liam.brown26@example.com,Brampton,2024-08-08,37,3038.43,basic,false
+1056,Ava Gagnon,ava.gagnon77@example.com,Ottawa,,28,"$3,442.14",premium,N
+1057,Nora Patel,nora.patel22@example.com,Brampon,2024-09-24,38,1891.94,Premium,false
+1010,Isla Roy,isla.roy7@example.com,hamilton,2024-07-13,49,$411.32,basic,false
+1058,  Emma Patel,unknown,Toronto  ,2024-04-13,38,"$2,143.86",premium,no
+1059,Chloe Tremblay,chloe.tremblay25@example.com,Ottawa,"Jul 8, 2024",68,1877.66,Basic,Y
+1060,  Rohan Clark,rohan.clark78@example.com,MISSISSAUGA,01/09/2024,63,"$1,409.95",Pro,No
+1067,olivia sharma,olivia.sharma75@example.com,TORONTO,2024-09-28,57,,Basic,0
+1061,Aarav  Walker ,aarav.walker61@example.com,Ottawa,"May 14, 2024",27,976.2,pro,Y
+1062,Ryan Clark,ryan.clark78@example.com,MISSISSAUGA,06/26/2024,24,"$1,953.09",Premium,No
+1063,Vivaan Sharma,vivaan.sharma70@example.com,Ottawa,02/09/2024,32,2452.86,premium,yes
+1064,Sofia Smith,sofia.smith80@example.com,Brampton ,09/28/2024,thirty-two,"$4,055.28",Pro,Y
+1065,Chloe Singh,chloe.singh26@example.com,Brampton,2024-04-05,56,$423.28,basic,1
+1066,Mateo Brown,mateo.brown13@example.com,Toronto,"Jan 16, 2024",33,"$4,399.28",BASIC,no
+1067,olivia sharma,olivia.sharma75@example.com,TORONTO,2024-09-28,57,,Basic,0
+1068,Leo Lee,leo.lee5@example.com,Brampton,2024-04-09,65,"$1,072.11",Premium,TRUE
+1069,hannah wilson,N/A,Ottawa,2024-02-14,44,843.30,Pro,yes
+1070,Lucas Clark,lucas.clark37@example.com,Ottawa,05/24/2024,41,205.2,Premium,no
+1071,Lucas Clark,lucas.clark1@example.com,brampton,2024-02-27,55,"$2,277.04",Basic,Yes
+1072,Zara Smith,-,Hamilton,2024-03-12,52,434.01,basic,Y
+1073,Noah Walker,noah.walker62@example.com,hamilton,02/23/2024,29,4128.83,Pro,no
+1074,ryan gill,,Hamilton,2024-07-12,34,"$3,937.24", Premium,Yes
+1075,Hannah Walker,hannah.walker50@example.com,hamilton,07/10/2024,46,1839.67,Basic,Yes
+1076,Aarav Lee,aarav.lee60@example.com,hamilton,2024-03-26,unknown,1798.13,premium,1
+1077,  Mateo Roy,mateo.roy82@example.com,Mississauga,2024-01-25,43,"$3,790.26",Basic,0
+1078,Nora Clark,nora.clark25@example.com,Ottawa,03/22/2024,unknown,"1,762.2",Basic,N
+1004,Kabir Lee,kabir.lee47@example.com,Brampton ,04/03/2024,52,1727.47,Pro,No
